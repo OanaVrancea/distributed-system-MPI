@@ -1,0 +1,23 @@
+Vrancea Oana Roxana, 336 CA
+
+In prima etapa a temei, stabilirea topologiei, procesele coordonator citesc 
+initial fisierul corespunzaror si salveaza intr-un vector specific (cluster0,
+cluster1, cluster2) rangurile proceselor worker care fac parte din cluster-ul
+sau. Cu MPI_Send acestia isi anunta procesele worker cine este coordonatorul
+cluster-ului in care se afla. Pentru stabilirea topologiei, procesele 
+coordonator isi trimit intre ele dimensiunea cluster-ului pe care il coordoneaza,
+precum si vectorul cu rangurile proceselor worker din cluster-ul in care se afla.
+Cand un proces coordonator afla intreaga topologie, o trimite si catre procesele
+worker din cluster-ul pe care il coordoneaza. Un proces afiseaza topologia in
+momentul in care o afla.
+In a doua etapa a temei, realizarea calculelor, procesul 0 citeste dimensiunea N 
+si construieste vectorul initial. El calculeaza numarul de iteratii care ar trebui
+realizate de fiecare proces, precum si numarul de iteratii care se realizeaza 
+in total in fiecare cluster si trimite aceste informatii catre procesele 1 si 2.
+Procesele 1 si 2 primesc de la procesul 0 si cate o parte de vector pe care trebuie sa
+o imparta intre procesele lor worker. In continuare, fiecare proces coordonator
+trebuie sa trimita proceselor worker corespunzatoare dimensiunea partii de vector pe
+care o prelucreaza si partea de vector. Dupa ce procesele worker efectueaza calculele,
+trimit vectorul prelucrat catre procesul lor coodonator, care asambleaza bucatile
+de vector. Procesele 1 si 2 trimit in continuare partea de vector pe care au prelucrat-o
+catre procesul 0, care le asambleaza si face afisarea.
